@@ -1,8 +1,10 @@
 FROM python:latest
 
-WORKDIR /bot
-COPY ./src ./bot
+WORKDIR /app
 
-RUN pip3 install gspread python-telegram-bot
+COPY ./requirements.txt /app
+RUN pip install -r requirements.txt
+
+COPY . /app
 
 EXPOSE 5000
