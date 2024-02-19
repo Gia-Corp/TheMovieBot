@@ -1,12 +1,10 @@
-FROM python:3.12.2-slim-bookworm
+FROM python:3.12.2-slim
 
-WORKDIR /bot
+WORKDIR /code
 
-COPY ./requirements.txt /bot
-RUN pip install -r requirements.txt
+COPY ./requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . /bot
-
-EXPOSE 5000
+COPY ./src ./src
 
 CMD ["python", "main.py"]
