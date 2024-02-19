@@ -1,10 +1,12 @@
-FROM python:latest
+FROM python:3.12.2-slim-bookworm
 
-WORKDIR /app
+WORKDIR /bot
 
-COPY ./requirements.txt /app
+COPY ./requirements.txt /bot
 RUN pip install -r requirements.txt
 
-COPY . /app
+COPY . /bot
 
 EXPOSE 5000
+
+CMD ["python", "main.py"]
