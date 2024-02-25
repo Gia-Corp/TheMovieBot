@@ -1,8 +1,7 @@
 services:
   bot:
     build: .
-    image: pelisbot:0.1.0
-    container_name: pelis-bot-container
+    image: pelis-bot:0.1.0
+    container_name: pelis-container
     volumes:
       - .:/bot
-    restart: unless-stopped
