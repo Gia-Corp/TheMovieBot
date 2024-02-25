@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(
-        chat_id=update.effective_chat.id, text="Ya quité el token del código 2.0!"
+        chat_id=update.effective_chat.id, text="Este es un nuevo texto de respuesta"
     )
 
 
@@ -17,5 +17,7 @@ if __name__ == "__main__":
 
     start_handler = CommandHandler("start", start)
     application.add_handler(start_handler)
+
+    print("🟢 Bot started successfully!")
 
     application.run_polling()
