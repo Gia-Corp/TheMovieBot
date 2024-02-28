@@ -3,11 +3,8 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
 from dotenv import load_dotenv
 
-
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id, text="Este es un nuevo texto de respuesta"
-    )
+    await update.message.reply_text("Ahora te contesto esto")
 
 
 if __name__ == "__main__":
