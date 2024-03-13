@@ -10,6 +10,15 @@ from telegram.ext import (
     filters,
 )
 from dotenv import load_dotenv
+import gspread
+
+NAME = 0
+
+SHEET_NAME = "test_movieproject"
+CREDENTIALS = "credentials.json"
+
+gc = gspread.service_account(filename=CREDENTIALS)
+sheet = gc.open(SHEET_NAME).sheet1
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -22,7 +31,12 @@ async def get_movie(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def movie_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print("La peli que se busca es: " + update.message.text)
+    cell_list = sheet.findall(update.message.text)
+    if len(cell_list) > 0:
+        response = "Está en la lista ✅"
+    else:
+        response = "No está en la lista ❌"
+    await update.message.reply_text(response)
     return ConversationHandler.END
 
 
@@ -39,12 +53,10 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
-NAME = 0
-
-
 def main() -> None:
     load_dotenv()
     bot_token = os.environ["BOT_TOKEN"]
+
     application = ApplicationBuilder().token(bot_token).post_init(post_init).build()
 
     start_handler = CommandHandler("start", start)
