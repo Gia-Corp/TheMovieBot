@@ -18,18 +18,18 @@ SHEET_NAME = "test_movieproject"
 CREDENTIALS = "credentials.json"
 
 START_COMMAND = "start"
-START_REPLY = "Hola!"
-START_DESCRIPTION = "Saludá al bot"
+START_DESCRIPTION = "Decile hola al bot"
+START_REPLY = "Hola! 👋"
 
 IS_PRESENT_COMMAND = "ispresent"
-IS_PRESENT_REPLY = "¿Qué peli estás buscando?"
 IS_PRESENT_DESCRIPTION = "Chequeá si una peli está en la lista"
+IS_PRESENT_REPLY = "¿Qué peli estás buscando?"
 IS_PRESENT_POSITIVE_RESULT = "Está en la lista ✅"
 IS_PRESENT_NEGATIVE_RESULT = "No está en la lista ❌"
 
 CANCEL_COMMAND = "cancel"
-CANCEL_REPLY = "Ok, no querés seguir buscando..."
-CANCEL_DESCRIPTION = "Terminá con esta conversación que estás teniendo"
+CANCEL_DESCRIPTION = "Terminá esta conversación"
+CANCEL_REPLY = "Ok, te arrepentiste"
 
 BOT_STARTED_MESSAGE = "🟢 Bot started successfully!"
 BOT_TOKEN_ENVIRONMENT_VARIABLE = "BOT_TOKEN"
