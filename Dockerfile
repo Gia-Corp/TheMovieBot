@@ -29,4 +29,4 @@ USER $USERNAME
 ADD . .
 RUN pip install --no-cache-dir -r requirements.txt
 
-ENTRYPOINT [ "sleep", "infinity" ]
+ENTRYPOINT [ "/bin/bash" ]
