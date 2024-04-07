@@ -12,7 +12,7 @@ from telegram.ext import (
 from dotenv import load_dotenv
 import gspread
 
-NAME = 0
+NAME = 1
 
 SHEET_NAME = "test_movieproject"
 CREDENTIALS = "credentials.json"
@@ -29,6 +29,7 @@ IS_PRESENT_NEGATIVE_RESULT = "No está en la lista ❌"
 
 CANCEL_COMMAND = "cancel"
 CANCEL_REPLY = "Ok, no querés seguir buscando..."
+CANCEL_DESCRIPTION = "Terminá con esta conversación que estás teniendo"
 
 BOT_STARTED_MESSAGE = "🟢 Bot started successfully!"
 BOT_TOKEN_ENVIRONMENT_VARIABLE = "BOT_TOKEN"
@@ -41,6 +42,7 @@ async def post_init(app: Application):
     command_info = [
         BotCommand(START_COMMAND, START_DESCRIPTION),
         BotCommand(IS_PRESENT_COMMAND, IS_PRESENT_DESCRIPTION),
+        BotCommand(CANCEL_COMMAND, CANCEL_DESCRIPTION),
     ]
     await app.bot.set_my_commands(commands=command_info)
 
@@ -80,7 +82,7 @@ def main() -> None:
     start_handler = CommandHandler(START_COMMAND, start)
     cancel_handler = CommandHandler(CANCEL_COMMAND, cancel)
     is_present_handler = CommandHandler(IS_PRESENT_COMMAND, is_present)
-    movie_name_handler = MessageHandler(filters.TEXT, movie_name)
+    movie_name_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), movie_name)
 
     app.add_handler(start_handler)
     app.add_handler(cancel_handler)
