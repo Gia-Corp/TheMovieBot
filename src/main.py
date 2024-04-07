@@ -17,15 +17,16 @@ NAME = 0
 SHEET_NAME = "test_movieproject"
 CREDENTIALS = "credentials.json"
 
-MOVIE_FOUND = "Está en la lista ✅"
-MOVIE_NOT_FOUND = "No está en la lista ❌"
-
 START_COMMAND = "start"
 START_REPLY = "Hola!"
 START_DESCRIPTION = "Saludá al bot"
+
 IS_PRESENT_COMMAND = "ispresent"
 IS_PRESENT_REPLY = "¿Qué peli estás buscando?"
 IS_PRESENT_DESCRIPTION = "Chequeá si una peli está en la lista"
+IS_PRESENT_POSITIVE_RESULT = "Está en la lista ✅"
+IS_PRESENT_NEGATIVE_RESULT = "No está en la lista ❌"
+
 CANCEL_COMMAND = "cancel"
 CANCEL_REPLY = "Ok, no querés seguir buscando..."
 
@@ -34,6 +35,14 @@ BOT_TOKEN_ENVIRONMENT_VARIABLE = "BOT_TOKEN"
 
 gc = gspread.service_account(filename=CREDENTIALS)
 sheet = gc.open(SHEET_NAME).sheet1
+
+
+async def post_init(app: Application):
+    command_info = [
+        BotCommand(START_COMMAND, START_DESCRIPTION),
+        BotCommand(IS_PRESENT_COMMAND, IS_PRESENT_DESCRIPTION),
+    ]
+    await app.bot.set_my_commands(commands=command_info)
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -47,17 +56,11 @@ async def is_present(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def movie_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
     cell_list = sheet.findall(update.message.text)
-    response = MOVIE_NOT_FOUND if not cell_list else MOVIE_FOUND
+    response = (
+        IS_PRESENT_NEGATIVE_RESULT if not cell_list else IS_PRESENT_POSITIVE_RESULT
+    )
     await update.message.reply_text(response)
     return ConversationHandler.END
-
-
-async def post_init(app: Application):
-    command_info = [
-        BotCommand(START_COMMAND, START_DESCRIPTION),
-        BotCommand(IS_PRESENT_COMMAND, IS_PRESENT_DESCRIPTION),
-    ]
-    await app.bot.set_my_commands(commands=command_info)
 
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -65,10 +68,13 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
-def main() -> None:
+def load_bot_token_from_env_file():
     load_dotenv()
-    bot_token = os.environ[BOT_TOKEN_ENVIRONMENT_VARIABLE]
+    return os.environ[BOT_TOKEN_ENVIRONMENT_VARIABLE]
 
+
+def main() -> None:
+    bot_token = load_bot_token_from_env_file()
     app = ApplicationBuilder().token(bot_token).post_init(post_init).build()
 
     start_handler = CommandHandler(START_COMMAND, start)
