@@ -12,7 +12,7 @@ from telegram.ext import (
 from dotenv import load_dotenv
 import gspread
 
-NAME = 1
+NAME = 0
 
 SHEET_NAME = "test_movieproject"
 CREDENTIALS = "credentials.json"
@@ -80,12 +80,11 @@ def main() -> None:
     app = ApplicationBuilder().token(bot_token).post_init(post_init).build()
 
     start_handler = CommandHandler(START_COMMAND, start)
-    cancel_handler = CommandHandler(CANCEL_COMMAND, cancel)
     is_present_handler = CommandHandler(IS_PRESENT_COMMAND, is_present)
-    movie_name_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), movie_name)
+    movie_name_handler = MessageHandler(~filters.COMMAND, movie_name)
+    cancel_handler = CommandHandler(CANCEL_COMMAND, cancel)
 
     app.add_handler(start_handler)
-    app.add_handler(cancel_handler)
 
     is_present_conversation_handler = ConversationHandler(
         entry_points=[is_present_handler],
