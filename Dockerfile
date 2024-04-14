@@ -3,7 +3,6 @@ FROM python:3.12.2-slim-bookworm
 WORKDIR /bot
 
 # Install git
-
 RUN apt-get -y update
 RUN apt-get -y install git
 
