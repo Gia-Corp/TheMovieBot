@@ -1,7 +1,12 @@
 services:
   bot:
-    build: .
-    image: pelis-bot:0.1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pelis-bot
     container_name: pelis-container
     volumes:
       - .:/bot
+    command: "/bin/bash"
+    stdin_open: true
+    tty: true
