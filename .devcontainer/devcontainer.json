@@ -1,17 +1,18 @@
 {
-    "name": "Pelis Dev",
-    "shutdownAction": "stopCompose",
-    "dockerComposeFile": "../docker-compose.yml",
-    "service": "bot",
-    "customizations": {
-        "vscode": {
-            "extensions": ["ms-python.python", "ms-python.black-formatter"],
-            "settings": {
-                "terminal.integrated.defaultProfile.linux": "bash",
-                "terminal.integrated.profiles.linux": { "bash": { "path": "/bin/bash" } }
-            }
-        }
-    },
-    "workspaceFolder": "/bot",
-    "postStartCommand": ["/usr/bin/bash '--init-file' '/.vscode-server/bin/5c3e652f63e798a5ac2f31ffd0d863669328dc4c/out/vs/workbench/contrib/terminal/browser/media/shellIntegration-bash.sh'", "cd /bot"]
+  "name": "Pelis",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "bot",
+  "workspaceFolder": "/bot",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python", "ms-python.black-formatter"],
+      "settings": {
+        "dev.containers.gitCredentialHelperConfigLocation": "global",
+        "dev.containers.copyGitConfig": true,
+        "git.enabled": true,
+        "git.path": "/usr/bin/git",
+        "terminal.integrated.shell.linux": "/bin/bash"
+      }
+    }
+  }
 }
