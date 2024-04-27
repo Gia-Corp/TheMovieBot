@@ -15,7 +15,6 @@ import gspread
 NAME = 0
 
 SHEET_NAME = "test_movieproject"
-CREDENTIALS = "credentials.json"
 
 START_COMMAND = "start"
 START_DESCRIPTION = "Decile hola al bot"
@@ -34,7 +33,22 @@ CANCEL_REPLY = "Ok, te arrepentiste"
 BOT_STARTED_MESSAGE = "🟢 Bot started successfully!"
 BOT_TOKEN_ENVIRONMENT_VARIABLE = "BOT_TOKEN"
 
-gc = gspread.service_account(filename=CREDENTIALS)
+load_dotenv()
+
+credentials = {
+    "type": os.environ["TYPE"],
+    "project_id": os.environ["PROJECT_ID"],
+    "private_key_id": os.environ["PRIVATE_KEY_ID"],
+    "private_key": os.environ["PRIVATE_KEY"],
+    "client_email": os.environ["CLIENT_EMAIL"],
+    "client_id": os.environ["CLIENT_ID"],
+    "auth_uri": os.environ["AUTH_URI"],
+    "token_uri": os.environ["TOKEN_URI"],
+    "auth_provider_x509_cert_url": os.environ["AUTH_PROVIDER_X509_CERT_URL"],
+    "client_x509_cert_url": os.environ["CLIENT_X509_CERT_URL"],
+}
+
+gc = gspread.service_account_from_dict(credentials)
 sheet = gc.open(SHEET_NAME).sheet1
 
 
@@ -70,13 +84,8 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
-def load_bot_token_from_env_file():
-    load_dotenv()
-    return os.environ[BOT_TOKEN_ENVIRONMENT_VARIABLE]
-
-
 def main() -> None:
-    bot_token = load_bot_token_from_env_file()
+    bot_token = os.environ[BOT_TOKEN_ENVIRONMENT_VARIABLE]
     app = ApplicationBuilder().token(bot_token).post_init(post_init).build()
 
     start_handler = CommandHandler(START_COMMAND, start)
