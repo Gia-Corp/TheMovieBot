@@ -6,6 +6,8 @@ WORKDIR /bot
 RUN apt-get -y update
 RUN apt-get -y install git
 
+EXPOSE 11111
+
 # Copy root directory and install project dependencies
 ADD . .
 RUN pip install --no-cache-dir -r requirements.txt
