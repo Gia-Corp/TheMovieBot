@@ -5,7 +5,7 @@
   "workspaceFolder": "/bot",
   "customizations": {
     "vscode": {
-      "extensions": ["ms-python.python", "ms-python.black-formatter"],
+      "extensions": ["ms-python.python", "ms-python.black-formatter", "ms-python.pylint"],
       "settings": {
         "dev.containers.gitCredentialHelperConfigLocation": "global",
         "dev.containers.copyGitConfig": true,

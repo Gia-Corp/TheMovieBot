@@ -61,16 +61,16 @@ async def post_init(app: Application):
     await app.bot.set_my_commands(commands=command_info)
 
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def start(update: Update, _context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(START_REPLY)
 
 
-async def is_present(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def is_present(update: Update, _context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(IS_PRESENT_REPLY)
     return NAME
 
 
-async def movie_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def movie_name(update: Update, _context: ContextTypes.DEFAULT_TYPE):
     cell_list = sheet.findall(update.message.text)
     response = (
         IS_PRESENT_NEGATIVE_RESULT if not cell_list else IS_PRESENT_POSITIVE_RESULT
@@ -79,7 +79,7 @@ async def movie_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
-async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def cancel(update: Update, _context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(CANCEL_REPLY)
     return ConversationHandler.END
 
