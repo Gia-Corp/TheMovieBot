@@ -2,7 +2,7 @@ services:
   bot:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     image: pelis-bot
     container_name: pelis-container
     volumes:
