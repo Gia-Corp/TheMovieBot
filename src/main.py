@@ -1,4 +1,3 @@
-import os
 from telegram import BotCommand, Update
 from telegram.ext import (
     ApplicationBuilder,
@@ -9,12 +8,10 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
-from dotenv import load_dotenv
 import gspread
+import config
 
 NAME = 0
-
-SHEET_NAME = "test_movieproject"
 
 START_COMMAND = "start"
 START_DESCRIPTION = "Decile hola al bot"
@@ -30,26 +27,9 @@ CANCEL_COMMAND = "cancel"
 CANCEL_DESCRIPTION = "Terminá esta conversación"
 CANCEL_REPLY = "Ok, te arrepentiste"
 
-BOT_STARTED_MESSAGE = "🟢 Bot started successfully!"
-BOT_TOKEN_ENVIRONMENT_VARIABLE = "BOT_TOKEN"
 
-load_dotenv()
-
-credentials = {
-    "type": os.environ["TYPE"],
-    "project_id": os.environ["PROJECT_ID"],
-    "private_key_id": os.environ["PRIVATE_KEY_ID"],
-    "private_key": os.environ["PRIVATE_KEY"],
-    "client_email": os.environ["CLIENT_EMAIL"],
-    "client_id": os.environ["CLIENT_ID"],
-    "auth_uri": os.environ["AUTH_URI"],
-    "token_uri": os.environ["TOKEN_URI"],
-    "auth_provider_x509_cert_url": os.environ["AUTH_PROVIDER_X509_CERT_URL"],
-    "client_x509_cert_url": os.environ["CLIENT_X509_CERT_URL"],
-}
-
-gc = gspread.service_account_from_dict(credentials)
-sheet = gc.open(SHEET_NAME).sheet1
+gc = gspread.service_account_from_dict(config.CREDENTIALS)
+sheet = gc.open(config.SHEET_NAME).sheet1
 
 
 async def post_init(app: Application):
@@ -85,8 +65,7 @@ async def cancel(update: Update, _context: ContextTypes.DEFAULT_TYPE):
 
 
 def main() -> None:
-    bot_token = os.environ[BOT_TOKEN_ENVIRONMENT_VARIABLE]
-    app = ApplicationBuilder().token(bot_token).post_init(post_init).build()
+    app = ApplicationBuilder().token(config.BOT_TOKEN).post_init(post_init).build()
 
     start_handler = CommandHandler(START_COMMAND, start)
     is_present_handler = CommandHandler(IS_PRESENT_COMMAND, is_present)
@@ -102,9 +81,13 @@ def main() -> None:
     )
     app.add_handler(is_present_conversation_handler)
 
-    print(BOT_STARTED_MESSAGE)
-
-    app.run_polling()
+    match config.ENV:
+        case "dev":
+            print("Started bot polling")
+            app.run_polling()
+        case "prod":
+            print("Started bot webhook")
+            # app
 
 
 if __name__ == "__main__":
