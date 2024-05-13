@@ -83,11 +83,11 @@ def main() -> None:
 
     match config.ENV:
         case "dev":
-            print("Started bot polling")
-            app.run_polling()
+            print("Started bot: development")
         case "prod":
-            print("Started bot webhook")
-            # app
+            print("Started bot: production")
+
+    app.run_polling()
 
 
 if __name__ == "__main__":
