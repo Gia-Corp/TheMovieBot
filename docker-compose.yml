@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile.dev
     image: themoviebot
     container_name: themoviebot
+    ports:
+      - 8000:8000
     volumes:
       - .:/bot
     command: "/bin/bash"

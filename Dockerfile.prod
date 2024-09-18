@@ -1,14 +1,13 @@
-# Dockerfile for bot development image
-FROM python:3.12.2-slim-bookworm
+FROM python:3.12.6-slim
 
 WORKDIR /bot
 
 COPY requirements.txt .
 
-# Install project dependencies
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-# Copy root directory
 COPY . .
 
-CMD ["/bin/bash"]
+EXPOSE 8000
+
+CMD ["fastapi", "run", "src/api.py", "--port", "8000"]
