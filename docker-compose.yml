@@ -3,8 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    image: pelis-bot
-    container_name: pelis-container
+    image: themoviebot
+    container_name: themoviebot
     volumes:
       - .:/bot
     command: "/bin/bash"

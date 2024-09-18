@@ -1,11 +1,11 @@
 {
-  "name": "Pelis",
+  "name": "The Movie Bot",
   "dockerComposeFile": "../docker-compose.yml",
   "service": "bot",
   "workspaceFolder": "/bot",
   "customizations": {
     "vscode": {
-      "extensions": ["ms-python.python", "ms-python.black-formatter", "ms-python.pylint"],
+      "extensions": ["ms-python.python", "charliermarsh.ruff"],
       "settings": {
         "dev.containers.gitCredentialHelperConfigLocation": "global",
         "dev.containers.copyGitConfig": true,

@@ -8,7 +8,6 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
-import gspread
 import config
 
 NAME = 0
@@ -26,10 +25,6 @@ IS_PRESENT_NEGATIVE_RESULT = "No está en la lista ❌"
 CANCEL_COMMAND = "cancel"
 CANCEL_DESCRIPTION = "Terminá esta conversación"
 CANCEL_REPLY = "Ok, te arrepentiste"
-
-
-gc = gspread.service_account_from_dict(config.CREDENTIALS)
-sheet = gc.open(config.SHEET_NAME).sheet1
 
 
 async def post_init(app: Application):
@@ -51,7 +46,7 @@ async def is_present(update: Update, _context: ContextTypes.DEFAULT_TYPE):
 
 
 async def movie_name(update: Update, _context: ContextTypes.DEFAULT_TYPE):
-    cell_list = sheet.findall(update.message.text)
+    cell_list = None
     response = (
         IS_PRESENT_NEGATIVE_RESULT if not cell_list else IS_PRESENT_POSITIVE_RESULT
     )
@@ -87,7 +82,7 @@ def main() -> None:
         case "prod":
             print("Started bot: production")
 
-    app.run_polling()
+    # app.run_polling()
 
 
 if __name__ == "__main__":
