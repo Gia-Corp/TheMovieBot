@@ -1,0 +1,2 @@
+#!/bin/bash
+fastapi dev src/api.py --port 8000 --host 0.0.0.0

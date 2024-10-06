@@ -10,4 +10,6 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["fastapi", "run", "src/api.py", "--port", "8000"]
+RUN chmod +x start_prod
+
+CMD ["./start_prod"]
