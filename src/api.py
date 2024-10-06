@@ -1,12 +1,5 @@
 from fastapi import FastAPI, Request, Response
 import config
-# app = FastAPI()
-
-
-# @app.get("/")
-# def read_root():
-#     return {"Hello": "World"}
-
 from contextlib import asynccontextmanager
 from http import HTTPStatus
 from telegram import Update
@@ -27,7 +20,7 @@ ptb = (
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     await ptb.bot.setWebhook(
-        config.KOYEB_PUBLIC_DOMAIN,
+        config.KOYEB_PUBLIC_DOMAIN + "/updates",
         config.WEBHOOK_PUBLIC_KEY,
         secret_token=config.WEBHOOK_UPDATE_TOKEN,
     )
@@ -38,6 +31,11 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
 
 
 @app.post("/updates")
