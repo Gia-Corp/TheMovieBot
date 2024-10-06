@@ -1,10 +1,10 @@
-from fastapi import FastAPI, Request, Response
-import config
-from contextlib import asynccontextmanager
-from http import HTTPStatus
-from telegram import Update
 from telegram.ext import Application, CommandHandler
 from telegram.ext._contexttypes import ContextTypes
+from telegram import Update
+from fastapi import FastAPI, Request, Response
+from contextlib import asynccontextmanager
+from http import HTTPStatus
+import config
 
 # Initialize python telegram bot
 ptb = (
@@ -48,7 +48,6 @@ async def process_update(request: Request):
 
 # Example handler
 async def start(update, _: ContextTypes.DEFAULT_TYPE):
-    """Send a message when the command /start is issued."""
     await update.message.reply_text("starting...")
 
 
