@@ -1,7 +1,6 @@
 FROM python:3.12.6-slim
 
 WORKDIR /bot
-
 COPY requirements.txt .
 
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
@@ -11,8 +10,11 @@ RUN apt-get -y install git
 
 COPY . .
 
-EXPOSE 8000
+ARG PORT=8000
+EXPOSE $PORT
 
-ENV BOT_MODE="dev"
+ENV PORT=$PORT
+ENV HOST=0.0.0.0
+ENV BOT_MODE=dev
 
 CMD ["/bin/bash"]

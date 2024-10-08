@@ -1,17 +1,18 @@
 FROM python:3.12.6-slim
 
 WORKDIR /bot
-
 COPY requirements.txt .
 
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 COPY . .
 
-EXPOSE 8000
+ARG PORT=8000
+EXPOSE $PORT
+
+ENV PORT=$PORT
+ENV HOST=0.0.0.0
+ENV BOT_MODE=prod
 
 RUN chmod +x start_prod
-
-ENV BOT_MODE="prod"
-
 CMD ["./start_prod"]
