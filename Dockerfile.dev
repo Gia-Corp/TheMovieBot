@@ -13,4 +13,6 @@ COPY . .
 
 EXPOSE 8000
 
+ENV BOT_MODE="dev"
+
 CMD ["/bin/bash"]
