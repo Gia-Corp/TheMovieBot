@@ -1,2 +1,2 @@
 #!/bin/bash
-fastapi dev src/bot.py --port $PORT --host $HOST
+python src/bot.py

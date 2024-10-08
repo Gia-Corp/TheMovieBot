@@ -1,2 +1,2 @@
 #!/bin/bash
-fastapi run src/api.py --port $PORT --host $HOST
+fastapi run src/bot.py --port $PORT --host $HOST

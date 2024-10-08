@@ -5,7 +5,7 @@ load_dotenv()
 
 # General config
 
-ENV = getenv("ENV")
+BOT_MODE = getenv("BOT_MODE")
 
 # Telegram config
 

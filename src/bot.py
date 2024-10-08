@@ -1,24 +1,33 @@
-from telegram.ext import Application, CommandHandler
-from telegram.ext._contexttypes import ContextTypes
+from telegram.ext import Application
 from telegram import Update
 from fastapi import FastAPI, Request, Response
 from contextlib import asynccontextmanager
 from http import HTTPStatus
 import config
+import handlers
 
-# Initialize python telegram bot
-ptb = (
+builder = (
     Application.builder()
-    .updater(None)
     .token(config.BOT_TOKEN)
+    .post_init(handlers.post_init)
     .read_timeout(7)
     .get_updates_read_timeout(42)
-    .build()
 )
+
+if config.BOT_MODE == "prod":
+    builder.updater(None)
+
+ptb = builder.build()
+ptb.add_handler(handlers.start_handler)
+ptb.add_handler(handlers.is_present_conversation_handler)
+
+if config.BOT_MODE == "dev":
+    print("🟣 Bot started in development mode")
+    ptb.run_polling()
 
 
 @asynccontextmanager
-async def lifespan(_: FastAPI):
+async def manage_bot_webhook(_: FastAPI):
     await ptb.bot.setWebhook(
         config.KOYEB_PUBLIC_DOMAIN + "/updates",
         config.WEBHOOK_PUBLIC_KEY,
@@ -30,25 +39,17 @@ async def lifespan(_: FastAPI):
         await ptb.stop()
 
 
-app = FastAPI(lifespan=lifespan)
+api = FastAPI(lifespan=manage_bot_webhook)
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+@api.get("/")
+def give_status():
+    return "The Movie Bot is currently active"
 
 
-@app.post("/updates")
+@api.post("/updates")
 async def process_update(request: Request):
     req = await request.json()
     update = Update.de_json(req, ptb.bot)
     await ptb.process_update(update)
     return Response(status_code=HTTPStatus.OK)
-
-
-# Example handler
-async def start(update, _: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("starting...")
-
-
-ptb.add_handler(CommandHandler("start", start))

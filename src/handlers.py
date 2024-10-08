@@ -1,14 +1,12 @@
-from telegram import BotCommand, Update
+from telegram import BotCommand
 from telegram.ext import (
-    ApplicationBuilder,
+    Application,
     ContextTypes,
     CommandHandler,
-    Application,
     ConversationHandler,
     MessageHandler,
     filters,
 )
-import config
 
 NAME = 0
 
@@ -36,16 +34,16 @@ async def post_init(app: Application):
     await app.bot.set_my_commands(commands=command_info)
 
 
-async def start(update: Update, _context: ContextTypes.DEFAULT_TYPE):
+async def start(update, _: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(START_REPLY)
 
 
-async def is_present(update: Update, _context: ContextTypes.DEFAULT_TYPE):
+async def is_present(update, _: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(IS_PRESENT_REPLY)
     return NAME
 
 
-async def movie_name(update: Update, _context: ContextTypes.DEFAULT_TYPE):
+async def movie_name(update, _: ContextTypes.DEFAULT_TYPE):
     cell_list = None
     response = (
         IS_PRESENT_NEGATIVE_RESULT if not cell_list else IS_PRESENT_POSITIVE_RESULT
@@ -54,36 +52,18 @@ async def movie_name(update: Update, _context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
-async def cancel(update: Update, _context: ContextTypes.DEFAULT_TYPE):
+async def cancel(update, _: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(CANCEL_REPLY)
     return ConversationHandler.END
 
 
-def main() -> None:
-    app = ApplicationBuilder().token(config.BOT_TOKEN).post_init(post_init).build()
+start_handler = CommandHandler(START_COMMAND, start)
+is_present_handler = CommandHandler(IS_PRESENT_COMMAND, is_present)
+movie_name_handler = MessageHandler(~filters.COMMAND, movie_name)
+cancel_handler = CommandHandler(CANCEL_COMMAND, cancel)
 
-    start_handler = CommandHandler(START_COMMAND, start)
-    is_present_handler = CommandHandler(IS_PRESENT_COMMAND, is_present)
-    movie_name_handler = MessageHandler(~filters.COMMAND, movie_name)
-    cancel_handler = CommandHandler(CANCEL_COMMAND, cancel)
-
-    app.add_handler(start_handler)
-
-    is_present_conversation_handler = ConversationHandler(
-        entry_points=[is_present_handler],
-        states={NAME: [movie_name_handler]},
-        fallbacks=[cancel_handler],
-    )
-    app.add_handler(is_present_conversation_handler)
-
-    match config.ENV:
-        case "dev":
-            print("Started bot: development")
-        case "prod":
-            print("Started bot: production")
-
-    # app.run_polling()
-
-
-if __name__ == "__main__":
-    main()
+is_present_conversation_handler = ConversationHandler(
+    entry_points=[is_present_handler],
+    states={NAME: [movie_name_handler]},
+    fallbacks=[cancel_handler],
+)
