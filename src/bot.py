@@ -20,7 +20,7 @@ if config.BOT_MODE == "prod":
 
 app = builder.build()
 app.add_handler(commands.start_handler)
-app.add_handler(handlers.is_present_conversation_handler)
+app.add_handler(commands.is_present_conversation_handler)
 
 if config.BOT_MODE == "dev":
     print("🟣 Bot started in development mode")
