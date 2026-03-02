@@ -1,9 +1,9 @@
-FROM python:3.12.6-slim
+FROM python:3.13.3-slim
 
 WORKDIR /bot
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+RUN pip3 install --no-cache-dir --upgrade -r requirements.txt
 
 COPY . .
 
@@ -14,5 +14,5 @@ ENV PORT=$PORT
 ENV HOST=0.0.0.0
 ENV BOT_MODE=prod
 
-RUN chmod +x start_prod
-CMD ["./start_prod"]
+RUN chmod +x start_prod.sh
+CMD ["./start_prod.sh"]
