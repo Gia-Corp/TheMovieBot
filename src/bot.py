@@ -17,26 +17,26 @@ builder = (
 if config.BOT_MODE == "prod":
     builder.updater(None)
 
-ptb = builder.build()
-ptb.add_handler(handlers.start_handler)
-ptb.add_handler(handlers.is_present_conversation_handler)
+app = builder.build()
+app.add_handler(handlers.start_handler)
+app.add_handler(handlers.is_present_conversation_handler)
 
 if config.BOT_MODE == "dev":
     print("🟣 Bot started in development mode")
-    ptb.run_polling()
+    app.run_polling()
 
 
 @asynccontextmanager
 async def manage_bot_webhook(_: FastAPI):
-    await ptb.bot.setWebhook(
+    await app.bot.setWebhook(
         config.KOYEB_PUBLIC_DOMAIN + "/updates",
         config.WEBHOOK_PUBLIC_KEY,
         secret_token=config.WEBHOOK_UPDATE_TOKEN,
     )
-    async with ptb:
-        await ptb.start()
+    async with app:
+        await app.start()
         yield
-        await ptb.stop()
+        await app.stop()
 
 
 api = FastAPI(lifespan=manage_bot_webhook)
@@ -50,6 +50,6 @@ def give_status():
 @api.post("/updates")
 async def process_update(request: Request):
     req = await request.json()
-    update = Update.de_json(req, ptb.bot)
-    await ptb.process_update(update)
+    update = Update.de_json(req, app.bot)
+    await app.process_update(update)
     return Response(status_code=HTTPStatus.OK)
