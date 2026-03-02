@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 from http import HTTPStatus
 import config
 import handlers
+import commands
 
 builder = (
     Application.builder()
@@ -18,7 +19,7 @@ if config.BOT_MODE == "prod":
     builder.updater(None)
 
 app = builder.build()
-app.add_handler(handlers.start_handler)
+app.add_handler(commands.start_handler)
 app.add_handler(handlers.is_present_conversation_handler)
 
 if config.BOT_MODE == "dev":

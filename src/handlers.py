@@ -7,12 +7,9 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
+from commands import start_command
 
 NAME = 0
-
-START_COMMAND = "start"
-START_DESCRIPTION = "Decile hola al bot"
-START_REPLY = "Hola! 👋"
 
 IS_PRESENT_COMMAND = "ispresent"
 IS_PRESENT_DESCRIPTION = "Chequeá si una peli está en la lista"
@@ -27,15 +24,11 @@ CANCEL_REPLY = "Ok, te arrepentiste"
 
 async def post_init(app: Application):
     command_info = [
-        BotCommand(START_COMMAND, START_DESCRIPTION),
+        start_command,
         BotCommand(IS_PRESENT_COMMAND, IS_PRESENT_DESCRIPTION),
         BotCommand(CANCEL_COMMAND, CANCEL_DESCRIPTION),
     ]
     await app.bot.set_my_commands(commands=command_info)
-
-
-async def start(update, _: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(START_REPLY)
 
 
 async def is_present(update, _: ContextTypes.DEFAULT_TYPE):
@@ -57,7 +50,6 @@ async def cancel(update, _: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
-start_handler = CommandHandler(START_COMMAND, start)
 is_present_handler = CommandHandler(IS_PRESENT_COMMAND, is_present)
 movie_name_handler = MessageHandler(~filters.COMMAND, movie_name)
 cancel_handler = CommandHandler(CANCEL_COMMAND, cancel)
