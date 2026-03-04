@@ -63,6 +63,7 @@ def build_keyboard(pagination_metadata) -> InlineKeyboardMarkup:
 
 async def handle_pagination(update, context):
     query = update.callback_query
+    print(f"callback_data recibido: {query.data}")
     await query.answer()
     metadata, movies = await get_movies_from_api(query.data)
     text = create_reply_text(movies, metadata)
