@@ -18,3 +18,7 @@ WEBHOOK_UPDATE_TOKEN = getenv("WEBHOOK_UPDATE_TOKEN")
 # Koyeb config
 
 KOYEB_PUBLIC_DOMAIN = getenv("KOYEB_PUBLIC_DOMAIN")
+
+# Backend config
+
+BACKEND_URL = getenv("BACKEND_URL")

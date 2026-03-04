@@ -13,6 +13,7 @@ builder = (
     .post_init(handlers.post_init)
     .read_timeout(7)
     .get_updates_read_timeout(42)
+    .arbitrary_callback_data(True)
 )
 
 if config.BOT_MODE == "prod":
@@ -21,6 +22,7 @@ if config.BOT_MODE == "prod":
 app = builder.build()
 app.add_handler(commands.start_handler)
 app.add_handler(commands.is_present_conversation_handler)
+app.add_handler(commands.get_movies_handler)
 
 if config.BOT_MODE == "dev":
     print("🟣 Bot started in development mode")
@@ -28,7 +30,7 @@ if config.BOT_MODE == "dev":
 
 
 @asynccontextmanager
-async def manage_bot_webhook(_: FastAPI):
+async def manage_bot_webhook(_):
     await app.bot.setWebhook(
         config.KOYEB_PUBLIC_DOMAIN + "/updates",
         config.WEBHOOK_PUBLIC_KEY,
