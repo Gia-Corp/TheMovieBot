@@ -13,7 +13,6 @@ builder = (
     .post_init(handlers.post_init)
     .read_timeout(7)
     .get_updates_read_timeout(42)
-    .arbitrary_callback_data(True)
 )
 
 if config.BOT_MODE == "prod":

@@ -12,7 +12,6 @@ get_movies_command = BotCommand(GET_MOVIES_COMMAND, GET_MOVIES_DESCRIPTION)
 
 async def get_movies_from_api(endpoint="/movies?page=1&size=5"):
     url = f"{config.BACKEND_URL}{endpoint}"
-    print(f"BACKEND_URL: {url}")
 
     async with httpx.AsyncClient() as client:
         response = await client.get(url, timeout=45.0)
@@ -64,7 +63,6 @@ def build_keyboard(pagination_metadata) -> InlineKeyboardMarkup:
 async def handle_pagination(update, context):
     query = update.callback_query
     await query.answer()
-    print(f"callback_data recibido: {query.data}")
     metadata, movies = await get_movies_from_api(query.data)
     text = create_reply_text(movies, metadata)
 
