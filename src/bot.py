@@ -39,6 +39,7 @@ async def manage_bot_webhook(_):
     )
     async with app:
         await app.start()
+        await handlers.post_init(app)
         yield
         await app.stop()
 
