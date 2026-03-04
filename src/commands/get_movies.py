@@ -12,6 +12,7 @@ get_movies_command = BotCommand(GET_MOVIES_COMMAND, GET_MOVIES_DESCRIPTION)
 
 async def get_movies_from_api(endpoint="/movies?page=1&size=5"):
     url = f"{config.BACKEND_URL}{endpoint}"
+    print(f"BACKEND_URL: {config.BACKEND_URL}")
 
     async with httpx.AsyncClient() as client:
         response = await client.get(url, timeout=45.0)
