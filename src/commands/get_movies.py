@@ -5,16 +5,17 @@ import config
 
 GET_MOVIES_COMMAND = "getmovies"
 GET_MOVIES_DESCRIPTION = "Ver pelis en la lista"
-GET_MOVIES_REPLY = "[PLACEHOLDER] ACA VERIAS LAS PELIS EN LA LISTA"
+DEFAULT_MOVIES_ENDPOINT = "/movies?page=1&size=5"
+API_CALL_TIMEOUT = 60.0
 
 get_movies_command = BotCommand(GET_MOVIES_COMMAND, GET_MOVIES_DESCRIPTION)
 
 
-async def get_movies_from_api(endpoint="/movies?page=1&size=5"):
+async def get_movies_from_api(endpoint=DEFAULT_MOVIES_ENDPOINT):
     url = f"{config.BACKEND_URL}{endpoint}"
 
     async with httpx.AsyncClient() as client:
-        response = await client.get(url, timeout=45.0)
+        response = await client.get(url, timeout=API_CALL_TIMEOUT)
         response.raise_for_status()
         body = response.json()
 
