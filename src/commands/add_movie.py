@@ -14,11 +14,11 @@ TITLE, DIRECTOR, YEAR, WATCHED = range(4)
 add_movie_command = BotCommand(ADD_MOVIE_COMMAND, ADD_MOVIE_DESCRIPTION)
 
 
-async def create_movie_in_api(endpoint=DEFAULT_MOVIES_ENDPOINT):
-    url = f"{config.BACKEND_URL}{endpoint}"
+async def create_movie_in_api(movie):
+    url = f"{config.BACKEND_URL}{DEFAULT_MOVIES_ENDPOINT}"
 
     async with httpx.AsyncClient() as client:
-        response = await client.post(url, timeout=API_CALL_TIMEOUT)
+        response = await client.post(url, json=movie, timeout=API_CALL_TIMEOUT)
         response.raise_for_status()
 
 
@@ -59,12 +59,16 @@ async def movie_year(update, context):
 async def handle_movie_watched(update, context):
     movie_watched = update.message.text.lower() in ["✔️ sí", "sí", "si", "s"]
 
-    await update.message.reply_text(
-        f"TUS RESPUESTAS:\n\n"
-        f"🎬 {context.user_data['movie_title']}\n"
-        f"🎥 {context.user_data['movie_director']}\n"
-        f"📅 {context.user_data['movie_year']}\n"
-        f"👁 Viste: {movie_watched}",
+    movie = {
+        "title": context.user_data['movie_title'],
+        "director": context.user_data['movie_director'],
+        "year": context.user_data['movie_year'],
+        "watched": movie_watched
+    }
+
+    await create_movie_in_api(movie)
+
+    await update.message.reply_text("Peli añadida exitosamente ✅",
         reply_markup=ReplyKeyboardRemove(),
     )
     return ConversationHandler.END
