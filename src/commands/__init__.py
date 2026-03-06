@@ -6,6 +6,7 @@ from .get_movies import (
     get_movies_handler,
     handle_pagination_handler,
 )
+from .create_movie import create_movie_command, create_movie_conversation_handler
 
 __all__ = [
     "start_command",
@@ -16,4 +17,6 @@ __all__ = [
     "get_movies_command",
     "get_movies_handler",
     "handle_pagination_handler",
+    "create_movie_command",
+    "create_movie_conversation_handler",
 ]
