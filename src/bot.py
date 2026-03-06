@@ -23,7 +23,7 @@ app.add_handler(commands.start_handler)
 app.add_handler(commands.is_present_conversation_handler)
 app.add_handler(commands.get_movies_handler)
 app.add_handler(commands.handle_pagination_handler)
-app.add_handler(commands.create_movie_conversation_handler)
+app.add_handler(commands.add_movie_conversation_handler)
 
 if config.BOT_MODE == "dev":
     print("🟣 Bot started in development mode")

@@ -4,14 +4,14 @@ import httpx
 import config
 from .cancel import cancel_handler
 
-CREATE_MOVIE_COMMAND = "createmovie"
-CREATE_MOVIE_DESCRIPTION = "Crear peli"
+ADD_MOVIE_COMMAND = "addmovie"
+ADD_MOVIE_DESCRIPTION = "Nueva peli"
 DEFAULT_MOVIES_ENDPOINT = "/movies"
 API_CALL_TIMEOUT = 60.0
 
 TITLE, DIRECTOR, YEAR, WATCHED = range(4)
 
-create_movie_command = BotCommand(CREATE_MOVIE_COMMAND, CREATE_MOVIE_DESCRIPTION)
+add_movie_command = BotCommand(ADD_MOVIE_COMMAND, ADD_MOVIE_DESCRIPTION)
 
 
 async def create_movie_in_api(endpoint=DEFAULT_MOVIES_ENDPOINT):
@@ -22,14 +22,12 @@ async def create_movie_in_api(endpoint=DEFAULT_MOVIES_ENDPOINT):
         response.raise_for_status()
 
 
-async def create_movie(update, _):
-    # await create_movie_in_api()
-
+async def add_movie(update, _):
     await update.message.reply_text("¿Título de la peli?")
     return TITLE
 
 
-create_movie_handler = CommandHandler(CREATE_MOVIE_COMMAND, create_movie)
+add_movie_handler = CommandHandler(ADD_MOVIE_COMMAND, add_movie)
 
 
 async def movie_title(update, context):
@@ -52,14 +50,14 @@ async def movie_year(update, context):
     context.user_data["movie_year"] = update.message.text
 
     keyboard = ReplyKeyboardMarkup(
-        [["✔️ Sí", "❌ No"]], one_time_keyboard=True, resize_keyboard=True
+        [["Sí", "No"]], one_time_keyboard=True, resize_keyboard=True
     )
     await update.message.reply_text("¿Ya la viste?", reply_markup=keyboard)
     return WATCHED
 
 
 async def handle_movie_watched(update, context):
-    movie_watched = update.message.text
+    movie_watched = update.message.text.lower() in ["✔️ sí", "sí", "si", "s"]
 
     await update.message.reply_text(
         f"TUS RESPUESTAS:\n\n"
@@ -72,8 +70,8 @@ async def handle_movie_watched(update, context):
     return ConversationHandler.END
 
 
-create_movie_conversation_handler = ConversationHandler(
-    entry_points=[create_movie_handler],
+add_movie_conversation_handler = ConversationHandler(
+    entry_points=[add_movie_handler],
     states={
         TITLE: [MessageHandler(~filters.COMMAND, movie_title)],
         DIRECTOR: [MessageHandler(~filters.COMMAND, movie_director)],
