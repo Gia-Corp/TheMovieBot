@@ -60,15 +60,16 @@ async def handle_movie_watched(update, context):
     movie_watched = update.message.text.lower() in ["✔️ sí", "sí", "si", "s"]
 
     movie = {
-        "title": context.user_data['movie_title'],
-        "director": context.user_data['movie_director'],
-        "year": context.user_data['movie_year'],
-        "watched": movie_watched
+        "title": context.user_data["movie_title"],
+        "director": context.user_data["movie_director"],
+        "year": context.user_data["movie_year"],
+        "watched": movie_watched,
     }
 
     await create_movie_in_api(movie)
 
-    await update.message.reply_text("Peli añadida exitosamente ✅",
+    await update.message.reply_text(
+        "Peli añadida exitosamente ✅",
         reply_markup=ReplyKeyboardRemove(),
     )
     return ConversationHandler.END
