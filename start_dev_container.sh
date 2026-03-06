@@ -1,3 +1,3 @@
 #!/bin/bash
 docker compose up -d
-docker compose exec themoviebot bash
+docker compose exec bot bash
