@@ -5,7 +5,7 @@ import config
 
 GET_MOVIES_COMMAND = "getmovies"
 GET_MOVIES_DESCRIPTION = "Ver pelis en la lista"
-DEFAULT_MOVIES_ENDPOINT = "/movies?page=1&size=5"
+DEFAULT_MOVIES_ENDPOINT = "/api/movies?page=1&size=5"
 API_CALL_TIMEOUT = 60.0
 
 get_movies_command = BotCommand(GET_MOVIES_COMMAND, GET_MOVIES_DESCRIPTION)

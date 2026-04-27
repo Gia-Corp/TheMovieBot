@@ -6,7 +6,7 @@ from .cancel import cancel_handler
 
 ADD_MOVIE_COMMAND = "addmovie"
 ADD_MOVIE_DESCRIPTION = "Nueva peli"
-DEFAULT_MOVIES_ENDPOINT = "/movies"
+DEFAULT_MOVIES_ENDPOINT = "/api/movies"
 API_CALL_TIMEOUT = 60.0
 
 TITLE, DIRECTOR, YEAR, WATCHED = range(4)
